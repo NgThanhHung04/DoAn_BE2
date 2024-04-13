@@ -75,4 +75,11 @@ class CrudUserController extends Controller
             $users = User::paginate(2);
             return view('crud_user.list',['users' => $users]);
     }
+
+    public function signOut() {
+        Session::flush();
+        Auth::logout();
+
+        return Redirect('login');
+    }
 }

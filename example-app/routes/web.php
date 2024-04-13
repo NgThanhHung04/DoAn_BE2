@@ -20,6 +20,9 @@ Route::post('create', [CrudUserController::class, 'createUser'])->name('user.cre
 Route::get('login', [CrudUserController::class, 'indexLogin'])->name('user.loginIndex');
 Route::post('login', [CrudUserController::class, 'customLogin'])->name('user.login');
 Route::get('list', [CrudUserController  ::class, 'listUser'])->name('user.listUserIndex');
+
+Route::get('signout', [CrudUserController::class, 'signOut'])->name('signout');
+
 Route::get('/', function () {
     return view('welcome');
 });
