@@ -33,7 +33,7 @@ class CrudUserController extends Controller
             $file = $request->file('image');
             $ex = $file->getClientOriginalExtension(); 
             $filename = time().'.'.$ex;
-            $file->move('uploads/userimage/',$filename);
+            $file->move('uploads/image/',$filename);
             $data['image'] = $filename;
 
         }
@@ -49,6 +49,72 @@ class CrudUserController extends Controller
         return redirect()->route('user.loginIndex');
     }
 
+    public function listUser()
+    {
+            $users = User::paginate(2);
+            return view('crud_user.list',['users' => $users]);
+    }
+
+    public function detail($id)
+    {
+            $user = User::find($id);
+            return view('crud_user.read',['user' => $user]);
+    }
+
+    public function UpdateUser(Request $request)
+    {
+        $user_id = $request->get('id');
+        $user = User::find($user_id);
+
+        return view('crud_user.update',['user' => $user]);
+    }
+
+    public function PostUpdateUser(Request $request)
+    {
+        $input = $request->all();
+
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:6',
+            'phone' => 'required|max:10',
+            'image' => 'required'
+        ]);
+
+        $user = User::find($input['id']);
+        $user->name = $input['name'];
+        $user->email = $input['email'];
+        $user->password = $input['password'];
+        $user->phone = $input['phone'];
+
+        if($request->hasFile('image'))
+        {
+            //Xoa ảnh cũ
+            $image_cu = 'uploads/image/' . $user->image;
+            if(File::exists($image_cu))
+            {
+                File::delete($image_cu);
+            }
+            //xử lý ảnh mới
+            $file = $request->file('image');
+            $ex = $file->getClientOriginalExtension(); 
+            $filename = time().'.'.$ex;
+            $file->move('uploads/image/',$filename);
+            $user['image'] = $filename;
+        }
+        
+        $user->save();
+        return redirect('list');
+
+    }
+
+    // Delete user by id
+    public function deleteUser(Request $request)
+    {
+        $user_id =$request->get('id');
+        $user = User::destroy($user_id);
+        return redirect("list")->withSuccess('You have Signed-in');
+    }
     public function indexLogin()
     {
         return view('crud_user.login');
@@ -69,9 +135,11 @@ class CrudUserController extends Controller
   
         return redirect("login")->withSuccess('Login details are not valid');
     }
+    
+    public function signOut() {
+        Session::flush();
+        Auth::logout();
 
-    public function listUser()
-    {
-        return view('crud_user.list');
+        return Redirect('login');
     }
 }
