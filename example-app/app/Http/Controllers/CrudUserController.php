@@ -72,6 +72,7 @@ class CrudUserController extends Controller
 
     public function listUser()
     {
-        return view('crud_user.list');
+            $users = User::paginate(2);
+            return view('crud_user.list',['users' => $users]);
     }
 }
