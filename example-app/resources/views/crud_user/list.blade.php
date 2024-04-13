@@ -25,9 +25,9 @@
                             <td>{{ $user->phone }}</td>
                             <td><img style="width: 80px; height: 80px" src="{{ asset('uploads/image/' . $user->image) }}" alt="Image"></td>
                             <td>
-                                <a href="#" class="btn btn-info">View</a>
-                                <a href="#" class="btn btn-warning">Edit</a>
-                                <a href="#" class="btn btn-danger">Delete</a>
+                            <a href="{{ route('users.detail', ['id' => $user->id]) }}">View</a> |
+                                    <a href="#">Edit</a> |
+                                    <a href="{{route('user.deleteUser',['id' => $user->id]) }}">Delete</a>
                             </td>
                         </tr>
                         @endforeach

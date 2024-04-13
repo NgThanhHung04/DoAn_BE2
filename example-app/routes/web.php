@@ -22,6 +22,8 @@ Route::post('login', [CrudUserController::class, 'customLogin'])->name('user.log
 Route::get('list', [CrudUserController  ::class, 'listUser'])->name('user.listUserIndex');
 
 Route::get('signout', [CrudUserController::class, 'signOut'])->name('signout');
+Route::get('delete', [CrudUserController::class, 'deleteUser'])->name('user.deleteUser');
+Route::get('user/{id}', [CrudUserController::class, 'detail'])->name('users.detail');
 
 Route::get('/', function () {
     return view('welcome');

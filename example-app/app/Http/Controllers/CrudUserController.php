@@ -72,8 +72,14 @@ class CrudUserController extends Controller
 
     public function listUser()
     {
-            $users = User::paginate(2);
+            $users = User::paginate(1);
             return view('crud_user.list',['users' => $users]);
+    }
+
+    public function detail($id)
+    {
+            $user = User::find($id);
+            return view('crud_user.read',['user' => $user]);
     }
 
     public function signOut() {
@@ -81,5 +87,12 @@ class CrudUserController extends Controller
         Auth::logout();
 
         return Redirect('login');
+    }
+
+    public function deleteUser(Request $request)
+    {
+        $user_id =$request->get('id');
+        $user = User::destroy($user_id);
+        return redirect("list")->withSuccess('You have Signed-in');
     }
 }
