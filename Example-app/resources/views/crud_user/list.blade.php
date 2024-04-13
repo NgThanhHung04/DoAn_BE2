@@ -17,24 +17,27 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach($users as $user)
                         <tr>
-                            <td>a</td>
-                            <td>a</td>
-                            <td>a</td>
-                            <td>a</td>
-                            <!-- <td><img style="width: 80px; height: 80px" src="" alt="Image"></td> -->
+                            <td>{{ $user->id }}</td>
+                            <td>{{ $user->name }}</td>
+                            <td>{{ $user->email }}</td>
+                            <td>{{ $user->phone }}</td>
+                            <td><img style="width: 80px; height: 80px" src="{{ asset('uploads/image/' . $user->image) }}" alt="Image"></td>
                             <td>
-                                <a href="#" class="btn btn-info">View</a>
-                                <a href="#" class="btn btn-warning">Edit</a>
-                                <a href="#" class="btn btn-danger">Delete</a>
+                                <a href="{{ route('users.detail', ['id' => $user->id]) }}" class="btn btn-info">View</a>
+                                <a href="{{ route('user.UpdatetUser', ['id' => $user->id]) }}" class="btn btn-warning">Edit</a>
+                                <a href="{{ route('user.deleteUser',['id' => $user->id]) }}" class="btn btn-danger">Delete</a>
                             </td>
                         </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
         </div>
         <div class="row justify-content-center">
             <div class="col-md-12">
+                {{ $users->links() }}
             </div>
         </div>
     </div>
